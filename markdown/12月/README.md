@@ -215,3 +215,4 @@ var wordPattern = function(pattern, s) {
     return true;
 };
 ```
+
