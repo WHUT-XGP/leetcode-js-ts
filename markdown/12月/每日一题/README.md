@@ -107,3 +107,47 @@ var firstUniqChar = function(s) {
     return -1;
 };
 ```
+
+## [12/24 分发糖果](https://leetcode-cn.com/problems/candy/)
+
+老师想给孩子们分发糖果，有 N 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
+
+你需要按照以下要求，帮助老师给这些孩子分发糖果：
+
+每个孩子至少分配到 1 个糖果。
+相邻的孩子中，评分高的孩子必须获得更多的糖果。
+
+题解:
+贪心题  
+重点在于不要顾此失彼，不要去同时考虑三个，会有太多的情况出现，反而不利于对比  
+这里使用dp数组（全部初始化为1），并使用两次遍历：
+1. 从前往后看，对比前一个和当前，如果当前评分更高，那就将当前设置为前一个的糖数目+1。  
+2. 从后往前看，对比后一个和当前，如果当前评分更高并且糖比后一个少，那就将糖设置为后一个的数目加1
+```js
+/**
+ * @param {number[]} ratings
+ * @return {number}
+ */
+var candy = function (ratings) {
+    let dp = new Array(ratings.length).fill(1);
+    // 从前往后先比
+    for(let i=1;i<ratings.length;i++){
+        if(ratings[i]>ratings[i-1]){
+            dp[i] = dp[i-1]+1;
+        }
+    }
+    // 从后往前比
+    for(let i=ratings.length-2;i>-1;i--){
+        // 评分高而糖少
+        if(ratings[i]>ratings[i+1]&&dp[i]<=dp[i+1]){
+            dp[i]=dp[i+1]+1;
+        }
+    }
+    // console.log(dp)
+    // 返回和
+    return dp.reduce((prev,cur)=>{
+        return prev+cur
+    },0)
+    
+};
+```
