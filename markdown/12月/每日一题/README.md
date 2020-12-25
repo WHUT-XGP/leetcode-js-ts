@@ -121,33 +121,68 @@ var firstUniqChar = function(s) {
 贪心题  
 重点在于不要顾此失彼，不要去同时考虑三个，会有太多的情况出现，反而不利于对比  
 这里使用dp数组（全部初始化为1），并使用两次遍历：
+
 1. 从前往后看，对比前一个和当前，如果当前评分更高，那就将当前设置为前一个的糖数目+1。  
 2. 从后往前看，对比后一个和当前，如果当前评分更高并且糖比后一个少，那就将糖设置为后一个的数目加1
-```js
+
+``` js
 /**
  * @param {number[]} ratings
  * @return {number}
  */
-var candy = function (ratings) {
+var candy = function(ratings) {
     let dp = new Array(ratings.length).fill(1);
     // 从前往后先比
-    for(let i=1;i<ratings.length;i++){
-        if(ratings[i]>ratings[i-1]){
-            dp[i] = dp[i-1]+1;
+    for (let i = 1; i < ratings.length; i++) {
+        if (ratings[i] > ratings[i - 1]) {
+            dp[i] = dp[i - 1] + 1;
         }
     }
     // 从后往前比
-    for(let i=ratings.length-2;i>-1;i--){
+    for (let i = ratings.length - 2; i > -1; i--) {
         // 评分高而糖少
-        if(ratings[i]>ratings[i+1]&&dp[i]<=dp[i+1]){
-            dp[i]=dp[i+1]+1;
+        if (ratings[i] > ratings[i + 1] && dp[i] <= dp[i + 1]) {
+            dp[i] = dp[i + 1] + 1;
         }
     }
     // console.log(dp)
     // 返回和
-    return dp.reduce((prev,cur)=>{
-        return prev+cur
-    },0)
-    
+    return dp.reduce((prev, cur) => {
+        return prev + cur
+    }, 0)
+
+};
+```
+
+## [12/25 分发饼干](https://leetcode-cn.com/problems/assign-cookies/)
+假设你是一位很棒的家长，想要给你的孩子们一些小饼干。但是，每个孩子最多只能给一块饼干。
+
+对每个孩子 i，都有一个胃口值 g[i]，这是能让孩子们满足胃口的饼干的最小尺寸；并且每块饼干 j，都有一个尺寸 s[j] 。如果 s[j] >= g[i]，我们可以将这个饼干 j 分配给孩子 i ，这个孩子会得到满足。你的目标是尽可能满足越多数量的孩子，并输出这个最大数值。
+
+题解：  
+首先排序，排序后直接对两个数组进行对比。
+``` js
+/**
+ * @param {number[]} g
+ * @param {number[]} s
+ * @return {number}
+ */
+var findContentChildren = function(g, s) {
+    // 首先排序两个数组
+    g = g.sort((a, b) => a - b)
+    s = s.sort((a, b) => a - b)
+    let ans = 0;
+    let i = 0,
+        j = 0;
+    while (i < s.length && j < g.length) {
+        if (s[i] >= g[j]) {
+            ans++;
+            i++;
+            j++;
+        } else {
+            i++;
+        }
+    }
+    return ans;
 };
 ```
