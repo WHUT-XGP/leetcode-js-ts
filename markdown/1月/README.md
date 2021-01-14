@@ -170,3 +170,31 @@ var isBalanced = function(root) {
     return length <= 1 && isBalanced(root.left) && isBalanced(root.right);
 };
 ```
+
+### [5. 1018. 可被 5 整除的二进制前缀](https://leetcode-cn.com/problems/binary-prefix-divisible-by-5/)
+
+给定由若干 0 和 1 组成的数组 A。我们定义 N_i：从 A[0] 到 A[i] 的第 i 个子数组被解释为一个二进制数（从最高有效位到最低有效位）。
+
+返回布尔值列表 answer，只有当 N_i 可以被 5 整除时，答案 answer[i] 为 true，否则为 false。
+
+思路：  
+可被5整除的数字只跟该数字的最后一位数字（为0或5）有关系，于是不需要具体的算出二进制前缀对应的十进制整数是多少，只需每次保留最后一位数字（保留用该数字对10取余的十进制整数的结果）就好，而下一个二进制前缀对应的十进制整数 = 上一次的结果左移一位（乘以2）的结果 + 这次的A[i]（0或者1，正好对应十进制的0或者1）的结果。
+``` js
+/**
+ * @param {number[]} A
+ * @return {boolean[]}
+ */
+
+var prefixesDivBy5 = function(A) {
+    // 检测
+    let ans = [];
+    let number = 0;
+    for (let i = 0; i < A.length; i++) {
+        number = number << 1;
+        number += A[i];
+        number %= 10;
+        ans.push(number % 5 === 0)
+    }
+    return ans;
+};
+```
