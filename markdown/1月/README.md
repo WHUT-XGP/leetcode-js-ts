@@ -179,6 +179,7 @@ var isBalanced = function(root) {
 
 思路：  
 可被5整除的数字只跟该数字的最后一位数字（为0或5）有关系，于是不需要具体的算出二进制前缀对应的十进制整数是多少，只需每次保留最后一位数字（保留用该数字对10取余的十进制整数的结果）就好，而下一个二进制前缀对应的十进制整数 = 上一次的结果左移一位（乘以2）的结果 + 这次的A[i]（0或者1，正好对应十进制的0或者1）的结果。
+
 ``` js
 /**
  * @param {number[]} A
@@ -196,5 +197,70 @@ var prefixesDivBy5 = function(A) {
         ans.push(number % 5 === 0)
     }
     return ans;
+};
+```
+
+### [6. 剑指 Offer 50. 第一个只出现一次的字符](https://leetcode-cn.com/problems/di-yi-ge-zhi-chu-xian-yi-ci-de-zi-fu-lcof/)
+
+在字符串 s 中找出第一个只出现一次的字符。如果没有，返回一个单空格。 s 只包含小写字母。  
+解法一：hash暴力做就完事
+
+``` js
+/**
+ * @param {string} s
+ * @return {character}
+ */
+var firstUniqChar = function(s) {
+    // hash暴力解决
+    let map = {}
+    for (let item of s) {
+        map[item] ? map[item]++ : map[item] = 1;
+    }
+    for (let item of s) {
+        if (map[item] === 1) {
+            return item;
+        }
+    }
+    return " "
+
+};
+```
+
+### [剑指 Offer 52. 两个链表的第一个公共节点](https://leetcode-cn.com/problems/liang-ge-lian-biao-de-di-yi-ge-gong-gong-jie-dian-lcof/)
+
+输入两个链表，找出它们的第一个公共节点。
+
+很浪漫的一道题
+``` js
+/**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+
+/**
+ * @param {ListNode} headA
+ * @param {ListNode} headB
+ * @return {ListNode}
+ */
+var getIntersectionNode = function(headA, headB) {
+    // 如果命运注定我们有交集，能有同一段未来，那么我们只需要彼此不断努力前进。🦄
+    // 在到达终点后，我们可以重新来到起点重新出发。😋
+    // 暂时没有会面也没有关系，在没有遇见你的日子里，我还是在勇敢地独自向前。😉
+    // 因为我知道，我们注定会在那个初识的地点，相遇并共同走过往后的路。🥰
+
+    // 如果命运告诉我们注定无法相遇，我们依然需要坚持着前进。😥
+    // 终有一天，我们还是会同时到达终点，哪怕我们共同终点，是归于null。
+
+    // 隐约雷鸣，阴霾天空，即使天无雨，我亦留此地。  --《万叶集》
+    let p = headA;
+    let q = headB;
+    while (p != q) {
+        p = p == null ? headA : p.next;
+        q = q == null ? headB : q.next;
+    }
+    return p;
 };
 ```
